@@ -5,7 +5,7 @@ import { LogLevel } from '../generator/logger/log-level';
 export const DEFAULT_OUT_FILE = join(
   process.cwd(),
   'node_modules',
-  'kysely-codegen',
+  'kysely-zod-codegen',
   'dist',
   'db.d.ts',
 );

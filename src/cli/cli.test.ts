@@ -42,7 +42,7 @@ describe(Cli.name, () => {
 
   it('should be able to start the CLI', async () => {
     await execa`pnpm build`;
-    const binPath = join(process.cwd(), packageJson.bin['kysely-codegen']);
+    const binPath = join(process.cwd(), packageJson.bin['kysely-zod-codegen']);
     const output = await execa`node ${binPath} --help`.then((a) => a.stdout);
     deepStrictEqual(output.includes('--help, -h'), true);
   });

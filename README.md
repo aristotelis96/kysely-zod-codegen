@@ -1,6 +1,11 @@
-# ![kysely-codegen](./assets/kysely-codegen-logo.svg) <!-- omit from toc -->
+# ![kysely-zod-codegen](./assets/kysely-codegen-logo.svg) <!-- omit from toc -->
 
-`kysely-codegen` generates Kysely type definitions from your database. That's it.
+`kysely-zod-codegen` generates Kysely type definitions and zod schemas from your database.
+
+This project is based on [kysely-codegen](https://github.com/RobinBlomberg/kysely-codegen).
+It can be used the same way `kysely-codegen` is used and it provides one additional argument:
+
+`--generate-zod-schemas` which is used to generate zod schemas instead of typescript types.
 
 ## Table of contents <!-- omit from toc -->
 
@@ -13,7 +18,7 @@
 ## Installation
 
 ```sh
-npm install --save-dev kysely-codegen
+npm install --save-dev kysely-zod-codegen
 ```
 
 You will also need to install Kysely with your driver of choice:
@@ -63,7 +68,7 @@ DATABASE_URL=libsql://token@host:port/database
 Then run the following command, or add it to the scripts section in your package.json file:
 
 ```sh
-kysely-codegen
+kysely-zod-codegen
 ```
 
 This command will generate a `.d.ts` file from your database, for example:
@@ -102,7 +107,7 @@ export interface DB {
 To specify a different output file:
 
 ```sh
-kysely-codegen --out-file ./src/db/db.d.ts
+kysely-zod-codegen --out-file ./src/db/db.d.ts
 ```
 
 ## Using the type definitions
@@ -111,7 +116,7 @@ Import `DB` into `new Kysely<DB>`, and you're done!
 
 ```ts
 import { Kysely, PostgresDialect } from 'kysely';
-import { DB } from 'kysely-codegen';
+import { DB } from 'kysely-zod-codegen';
 import { Pool } from 'pg';
 
 const db = new Kysely<DB>({
@@ -130,7 +135,7 @@ If you need to use the generated types in e.g. function parameters and type defi
 
 ```ts
 import { Insertable, Updateable } from 'kysely';
-import { DB } from 'kysely-codegen';
+import { DB } from 'kysely-zod-codegen';
 import { db } from './db';
 
 async function insertUser(user: Insertable<User>) {
@@ -156,6 +161,22 @@ async function updateUser(user: Updateable<User>) {
 Read the [Kysely documentation](https://kysely.dev/docs/getting-started) for more information.
 
 ## CLI arguments
+
+#### --generate-zod-schemas
+
+Generates zod schemas instead of typescript types.
+
+**Example:**
+
+```ts
+export const profilesTableSchema = z.object({
+  id: z.string().uuid(),
+  avatar_url: z.string().nullable(),
+  updated_at: timestampSchema.nullable(),
+  username: z.string().nullable(),
+  website: z.string().nullable(),
+});
+```
 
 #### --camel-case <!-- omit from toc -->
 
@@ -196,19 +217,19 @@ Print all command line options.
 You can choose which tables should be included during code generation by providing a glob pattern to the `--include-pattern` and `--exclude-pattern` flags. We use [micromatch](https://github.com/micromatch/micromatch) under the hood, which provides advanced glob support. For instance, if you only want to include your public tables:
 
 ```sh
-kysely-codegen --include-pattern="public.*"
+kysely-zod-codegen --include-pattern="public.*"
 ```
 
 You can also include only certain tables within a schema:
 
 ```sh
-kysely-codegen --include-pattern="public.+(user|post)"
+kysely-zod-codegen --include-pattern="public.+(user|post)"
 ```
 
 Or exclude an entire class of tables:
 
 ```sh
-kysely-codegen --exclude-pattern="documents.*"
+kysely-zod-codegen --exclude-pattern="documents.*"
 ```
 
 #### --log-level [value] <!-- omit from toc -->
@@ -230,12 +251,12 @@ Specify type overrides for specific table columns in JSON format.
 **Example:**
 
 ```sh
-kysely-codegen --overrides='{"columns":{"table_name.column_name":"{foo:\"bar\"}"}}'
+kysely-zod-codegen --overrides='{"columns":{"table_name.column_name":"{foo:\"bar\"}"}}'
 ```
 
 #### --out-file [value] <!-- omit from toc -->
 
-Set the file build path. (default: `./node_modules/kysely-codegen/dist/db.d.ts`)
+Set the file build path. (default: `./node_modules/kysely-zod-codegen/dist/db.d.ts`)
 
 #### --partitions <!-- omit from toc -->
 
@@ -284,7 +305,7 @@ Set the default schema(s) for the database connection.
 Multiple schemas can be specified:
 
 ```sh
-kysely-codegen --schema=public --schema=hidden
+kysely-zod-codegen --schema=public --schema=hidden
 ```
 
 #### --singular <!-- omit from toc -->

@@ -29,7 +29,7 @@ import { ExportStatementNode } from './../../ast/export-statement-node';
 import { GLOBAL_ZOD_DEFINITIONS } from './zod-definitions';
 import { GLOBAL_IMPORTS } from './zod-imports';
 
-export type Overrides = {
+type Overrides = {
   /**
    * Specifies type overrides for columns.
    *

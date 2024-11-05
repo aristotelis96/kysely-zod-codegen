@@ -49,7 +49,7 @@ export type CliOptions = {
 };
 
 /**
- * Creates a kysely-codegen command-line interface.
+ * Creates a kysely-zod-codegen command-line interface.
  */
 export class Cli {
   logLevel = DEFAULT_LOG_LEVEL;
@@ -202,7 +202,7 @@ export class Cli {
 
   #showHelp() {
     console.info(
-      ['', 'kysely-codegen [options]', '', serializeFlags(FLAGS), ''].join(
+      ['', 'kysely-zod-codegen [options]', '', serializeFlags(FLAGS), ''].join(
         '\n',
       ),
     );
