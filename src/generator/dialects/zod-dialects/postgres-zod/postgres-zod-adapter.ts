@@ -5,7 +5,11 @@ import { ObjectExpressionNode } from '../../../ast/object-expression-node';
 import { PropertyNode } from '../../../ast/property-node';
 import { RawExpressionNode } from '../../../ast/raw-expression-node';
 import { UnionExpressionNode } from '../../../ast/union-expression-node';
-import { JSON_SCHEMA_DEFINITION } from '../../../transformer/zod/zod-definitions';
+import {
+  BUFFER_SCHEMA_DEFINITION,
+  JSON_SCHEMA_DEFINITION,
+  TIMESTAMP_SCHEMA_DEFINITION,
+} from '../../../transformer/zod/zod-definitions';
 
 type PostgresAdapterOptions = {
   numericParser?: NumericParser;
@@ -39,10 +43,7 @@ export class PostgresZodAdapter extends Adapter {
       new PropertyNode('x', new IdentifierNode('z.number()')),
       new PropertyNode('y', new IdentifierNode('z.number()')),
     ]),
-    timestampSchema: new UnionExpressionNode([
-      new IdentifierNode('z.coerce.date()'),
-      new IdentifierNode('z.string()'),
-    ]),
+    timestampSchema: TIMESTAMP_SCHEMA_DEFINITION,
     postgresIntervalSchema: new IdentifierNode(
       'PostgresIntervalSchema',
       new RawExpressionNode(`z.object({
@@ -55,12 +56,7 @@ export class PostgresZodAdapter extends Adapter {
         milliseconds: z.number().optional(),
       })`),
     ),
-    bufferSchema: new RawExpressionNode(`
-          z.custom<Buffer>((data) => {
-            return Buffer.isBuffer(data);
-          }, {
-            message: "Invalid buffer", // Optional error message
-          });`),
+    bufferSchema: BUFFER_SCHEMA_DEFINITION,
   };
 
   // These types have been found through experimentation in Adminer and in the 'pg' source code.

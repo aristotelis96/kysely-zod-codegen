@@ -8,6 +8,7 @@ import { MysqlDialect } from './dialects/mysql/mysql-dialect';
 import { PostgresDialect } from './dialects/postgres/postgres-dialect';
 import { SqliteDialect } from './dialects/sqlite/sqlite-dialect';
 import { WorkerBunSqliteDialect } from './dialects/worker-bun-sqlite/worker-bun-sqlite-dialect';
+import { MySqlZodDialect } from './dialects/zod-dialects/mysql-zod/mysql-zod-dialect';
 import { PostgresZodDialect } from './dialects/zod-dialects/postgres-zod/postgres-zod-dialect';
 
 export type DialectName =
@@ -43,6 +44,8 @@ export class DialectManager {
       switch (name) {
         case 'postgres':
           return new PostgresZodDialect();
+        case 'mysql':
+          return new MySqlZodDialect();
         default:
           throw new Error(`Missing zod dialect for ${name}`);
       }
